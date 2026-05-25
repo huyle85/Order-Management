@@ -15,4 +15,16 @@ END;
 GO
 
 
+CREATE PROCEDURE get_categoryID
+	@IDInput INT
+AS
+Begin 
+	SELECT*
+	From Category
+	Where CategoryID = @IDInput
+End
+EXEC get_categoryID 6;
+
+DROP PROCEDURE get_categoryID;
+GO
 
