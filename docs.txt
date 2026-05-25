@@ -1,0 +1,3 @@
+python -m venv venv
+venv\Scripts\activate.bat
+pip install fastapi uvicorn pyodbc pydantic passlib[bcrypt] python-jose[cryptography]

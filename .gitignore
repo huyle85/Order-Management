@@ -1,0 +1,12 @@
+# Chặn thư mục môi trường ảo Python
+venv/
+.venv/
+env/
+
+# Chặn các file rác tự sinh khi chạy Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Chặn cấu hình riêng của VS Code
+.vscode/
