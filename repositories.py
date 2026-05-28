@@ -44,3 +44,17 @@ class Category(BaseRepo):
             }
             for row in rows
         ]
+
+#list customer who place orders in year 2026
+class Customer(BaseRepo):
+    def get_customer_2026(self):
+        rows = self.execute_query("get_customer_2026")
+        return[
+            {
+                "customer_id": row.CustomerID,
+                "customer_name": row.CustomerName,
+                "customer_adress": row.CustomerAdress,
+                "order_date": row.OrderDate.strftime("%Y-%m-%d")
+            }
+            for row in rows
+        ]
