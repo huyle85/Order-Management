@@ -58,3 +58,20 @@ class Customer(BaseRepo):
             }
             for row in rows
         ]
+    
+
+#list all product for order id 15
+class Order(BaseRepo):
+    def get_information_id(self, id: int):
+        rows =self.execute_query("get_information_orderid ?", (id,))
+        return [
+            {
+                "Order Date": row.OrderDate,
+                "Product ID": row.ProductID,
+                "Product Name": row.ProductName,
+                "Unit Price": row.UnitPrice,
+                "CustomerID": row.CustomerID,
+                "Customer Name": row.CustomerName
+            }
+            for row in rows
+        ]

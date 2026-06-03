@@ -1,0 +1,33 @@
+CREATE PROCEDURE UpdateProductPriceSecure
+    -- Bước 1: Khai báo các biến đầu vào (Không dùng DECLARE vì ở trên chữ AS)
+    @ProductID INT,
+    @NewPrice INT
+AS
+BEGIN
+    -- Bọc toàn bộ code vào TRY để bắt lỗi bẫy hệ thống
+    BEGIN TRY
+        
+        -- Bước 2: Bắt đầu mở một Giao dịch an toàn
+        BEGIN TRANSACTION;
+
+        -- [CHỖ NÀY DÀNH CHO BẠN]: Viết câu lệnh UPDATE sản phẩm ở đây
+        -- Gợi ý: UPDATE Tên_Bảng SET Cột_Giá = @NewPrice WHERE Cột_ID = @ProductID;
+        
+
+
+        -- Bước 3: Nếu lệnh UPDATE chạy mượt mà không lỗi -> CHỐT LƯU DỮ LIỆU
+        COMMIT TRANSACTION;
+        PRINT 'Cap nhat gia san pham thanh cong!';
+
+    END TRY
+    BEGIN CATCH
+        
+        -- Bước 4: NẾU BỊ LỖI -> Lập tức QUAY XE, hủy bỏ lệnh UPDATE vừa rồi
+        ROLLBACK TRANSACTION;
+        
+        -- In thông báo lỗi ra màn hình cho lập trình viên biết
+        PRINT 'Cap nhat that bai. Da khoi phuc lai du lieu cu!';
+        PRINT ERROR_MESSAGE(); 
+
+    END CATCH
+END;
