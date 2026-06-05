@@ -1,5 +1,5 @@
 from database import DatabaseConnection
-from schemas import ProductCreate
+from schemas import ProductCreate, Product_update
 
 class BaseRepo:
     def __init__(self):
@@ -49,7 +49,12 @@ class Product(BaseRepo):
             (p.ProductName, p.UnitPrice, p.CategoryID),
             is_select=False
         )
-
+    def update_product(self, p: Product_update):
+        return self.execute_query(
+            "update_Product ?, ?, ?, ?",
+            (p.ProductID, p.ProductName, p.UnitPrice, p.CategoryID),
+            is_select= False
+        )
     
 class Category(BaseRepo):
     def get_category(self, id: int):

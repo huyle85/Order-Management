@@ -87,3 +87,54 @@ EXEC UpdateUnitPrice @ProductID = 1, @NewPrice = 250;
 select*
 from Product
 where ProductID = 1
+
+
+go
+Create Procedure sp_InsertProduct
+    @ProductName NVARCHAR(200),
+    @UnitPrice DECIMAL(18, 2),
+    @CategoryID INT
+as 
+begin
+    INSERT INTO Product(ProductName, UnitPrice, CategoryID)
+    VALUES (@ProductName, @UnitPrice, @CategoryID);
+end
+
+go
+Alter Procedure sp_InsertProduct
+    @ProductName NVARCHAR(200),
+    @UnitPrice DECIMAL(18, 2),
+    @CategoryID INT
+as 
+begin
+    INSERT INTO Product(ProductName, UnitPrice, CategoryID)
+    VALUES (@ProductName, @UnitPrice, @CategoryID);
+end
+
+
+--update product 
+
+go
+Create Procedure update_Product
+	@ProductID INT,
+	@ProductName Varchar(255) = NULL,
+	@UnitPrice INT = NUll,
+	@CategoryID INT = NULL
+as
+begin
+	begin try
+		begin transaction;
+		Update Product
+		Set 
+		ProductName = ISNULL(@ProductName, ProductName),
+		UnitPrice = ISNULL(@UnitPrice, UnitPrice),
+		CategoryID = ISNULL(@CategoryID, CategoryID)
+		Where ProductID = @ProductID
+		Commit transaction
+	end try
+	begin catch
+		if @@TRANCOUNT > 0
+			rollback transaction
+		throw;
+	end catch
+end
