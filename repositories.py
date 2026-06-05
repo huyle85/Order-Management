@@ -1,9 +1,10 @@
 from database import DatabaseConnection
+from schemas import ProductCreate
 
 class BaseRepo:
     def __init__(self):
         self.db = DatabaseConnection()
-    def execute_query(self, function_name: str, params: tuple = None):
+    def execute_query(self, function_name: str, params: tuple = None, is_select: bool = True):
         conn = self.db.get_connection()
         cursor = conn.cursor()
         try:
@@ -12,9 +13,17 @@ class BaseRepo:
                 cursor.execute(query, params)
             else:
                 cursor.execute(query)
-            rows = cursor.fetchall()
-            return rows
+            
+            if is_select:
+                rows = cursor.fetchall()
+                return rows
+            else:
+                conn.commit()
+                return True
+
         except Exception as ex:
+            if not is_select:
+                conn.rollback()
             raise ex
         finally:
             cursor.close()
@@ -33,6 +42,14 @@ class Product(BaseRepo):
             }
             for row in rows
         ]
+    
+    def add_product(self, p: ProductCreate):
+        return self.execute_query(
+            "sp_InsertProduct ?, ?, ?",
+            (p.ProductName, p.UnitPrice, p.CategoryID),
+            is_select=False
+        )
+
     
 class Category(BaseRepo):
     def get_category(self, id: int):

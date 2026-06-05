@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from repositories import Product, Category, Customer, Order
-
+from schemas import ProductCreate
 app = FastAPI(title="Học OOP lấy toàn bộ sản phẩm")
 product_service = Product()  
 category_service = Category()
@@ -25,3 +25,9 @@ def get_customer():
 def get_information_orderid(id: int):
     data = Order.get_information_id(id = id)
     return data
+
+@app.post("/add_sp")
+def create_product(product: ProductCreate):
+    data = product_service.add_product(product)
+    if data:
+        return {"status": "success", "message": "okok"}
